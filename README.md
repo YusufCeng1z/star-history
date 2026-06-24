@@ -1,42 +1,40 @@
-# sv
+# 🌟 Star History SVG Generator
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Generate beautiful, animated, and highly customizable GitHub Star History charts for your repositories. 
+The generated SVG files use **Pure CSS animations**, which means they run smoothly directly inside your GitHub `README.md` without requiring any JavaScript.
 
-## Creating a project
+👉 **[Generate your chart at StarHistory.link](https://starhistory.link)**
 
-If you're seeing this, you've probably already done this step. Congrats!
+## 🎨 Examples
 
-```sh
-# create a new project
-npx sv create my-app
-```
+You can easily customize the color theme and the layout style of your chart!
 
-To recreate this project with the same configuration:
+### Neon Dark (Default)
+[![SvelteKit Star History](https://starhistory.link/sveltejs/kit.svg?theme=cyan)](https://starhistory.link/sveltejs/kit)
 
-```sh
-# recreate this project
-npx sv@0.16.1 create --template minimal --types ts --install npm ./
-```
+### Light Mode
+[![React Star History](https://starhistory.link/facebook/react.svg?theme=amber&style=light)](https://starhistory.link/facebook/react)
 
-## Developing
+### Glassmorphism
+[![Linux Kernel Star History](https://starhistory.link/torvalds/linux.svg?theme=fuchsia&style=glass)](https://starhistory.link/torvalds/linux)
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Minimal
+[![Vue Star History](https://starhistory.link/vuejs/core.svg?theme=emerald&style=minimal)](https://starhistory.link/vuejs/core)
 
-```sh
-npm run dev
+## 🚀 How to Use
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+1. Go to **[StarHistory.link](https://starhistory.link)**
+2. Type in your GitHub repository (e.g., `owner/repo` or full URL)
+3. Customize your chart using the **Style** and **Theme** pickers.
+4. Click the **Copy** button and paste the markdown snippet directly into your `README.md`!
 
-## Building
+## 🛠️ Features
 
-To create a production version of your app:
+- **Pure CSS Animations**: Smooth line drawing and "pop" effects using SVG `@keyframes`.
+- **SSR Rendering**: Built with Svelte 5 and SvelteKit for blazingly fast SVG generation.
+- **Dynamic Theming**: 8 vibrant themes (`cyan`, `emerald`, `violet`, `amber`, `rose`, `fuchsia`, `blue`, `lime`) and 4 structural styles (`default`, `light`, `glass`, `minimal`).
+- **Edge Caching**: Heavily cached via CDN for instantaneous loading on GitHub Proxy.
 
-```sh
-npm run build
-```
+## 🤝 Open Source
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Made with ❤️ by [yusufceng1z](https://github.com/yusufceng1z). Feel free to star this repository if you find it helpful!
