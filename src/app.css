@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+	--background: #000000;
+	--foreground: #ffffff;
+	
+	--card: rgba(10, 10, 10, 0.6);
+	--card-border: rgba(255, 255, 255, 0.08);
+	--card-foreground: #ffffff;
+	
+	--primary: #00e5ff; /* Cyan/Neon blue */
+	--primary-glow: rgba(0, 229, 255, 0.4);
+	--primary-foreground: #000000;
+	
+	--secondary: rgba(255, 255, 255, 0.05);
+	--secondary-foreground: #a1a1aa;
+	
+	--muted: rgba(255, 255, 255, 0.03);
+	--muted-foreground: #888888;
+	
+	--border: rgba(255, 255, 255, 0.1);
+	--input: rgba(255, 255, 255, 0.05);
+	--ring: rgba(0, 229, 255, 0.5);
+	
+	--radius: 12px;
+	--font-main: 'Inter', system-ui, -apple-system, sans-serif;
+	--font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+body {
+	background-color: var(--background);
+	color: var(--foreground);
+	font-family: var(--font-main);
+	min-height: 100vh;
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
+}
+
+/* Typography */
+.text-muted { color: var(--muted-foreground); }
+.text-sm { font-size: 0.8rem; }
+.font-medium { font-weight: 500; }
+.font-mono { font-family: var(--font-mono); }
+
+/* Premium Flat Card */
+.card {
+	background: #000000;
+	border: 1px solid var(--card-border);
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.card-header {
+	padding: 1rem 1.25rem;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card-title {
+	font-size: 1.25rem;
+	font-weight: 600;
+	letter-spacing: -0.02em;
+	color: var(--foreground);
+}
+
+.card-description {
+	font-size: 0.85rem;
+	color: var(--muted-foreground);
+	margin-top: 0.25rem;
+}
+
+.card-content {
+	padding: 1.25rem;
+}
+
+/* Minimal Buttons */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	font-size: 0.8rem;
+	font-weight: 500;
+	height: 2.25rem;
+	padding: 0 0.875rem;
+	cursor: pointer;
+	border: 1px solid transparent;
+	transition: all 0.15s ease;
+	gap: 0.35rem;
+}
+
+.btn-primary {
+	background: var(--foreground);
+	color: var(--background);
+}
+
+.btn-primary:hover {
+	background: #e5e5e5;
+}
+
+.btn-outline {
+	border-color: rgba(255,255,255,0.15);
+	background: transparent;
+	color: var(--foreground);
+}
+
+.btn-outline:hover {
+	background: rgba(255, 255, 255, 0.05);
+	border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Compact Inputs */
+.input {
+	display: flex;
+	height: 2.5rem;
+	width: 100%;
+	border-radius: 6px;
+	border: 1px solid var(--border);
+	background: transparent;
+	padding: 0 0.875rem;
+	font-size: 0.875rem;
+	color: var(--foreground);
+	transition: border-color 0.15s ease;
+	outline: none;
+}
+
+.input:focus-visible {
+	border-color: var(--foreground);
+}
+
+.input::placeholder {
+	color: var(--muted-foreground);
+}
+
+/* Compact Badge */
+.badge {
+	display: inline-flex;
+	align-items: center;
+	border-radius: 4px;
+	border: 1px solid var(--border);
+	padding: 0.15rem 0.5rem;
+	font-size: 0.75rem;
+	font-weight: 500;
+	background: transparent;
+	color: var(--foreground);
+}
+
+/* Graph Elements */
+.graph-grid {
+	stroke: rgba(255, 255, 255, 0.05);
+	stroke-dasharray: 4 4;
+}
+
+.graph-axis {
+	stroke: rgba(255, 255, 255, 0.1);
+}
+
+.graph-text {
+	fill: var(--muted-foreground);
+	font-size: 11px;
+	font-family: var(--font-mono);
+}
+
+.graph-line {
+	fill: none;
+	stroke: var(--primary);
+	stroke-width: 2.5;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	filter: drop-shadow(0 0 8px var(--primary-glow)) drop-shadow(0 0 20px var(--primary-glow));
+}
+
+.graph-fill {
+	fill: url(#gradientFill);
+	opacity: 0;
+	transition: opacity 1s ease-in;
+}
+
+.graph-fill.fill-visible {
+	opacity: 1;
+}
+
+.graph-point {
+	fill: var(--background);
+	stroke: var(--primary);
+	stroke-width: 2;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.graph-point.point-visible {
+	opacity: 1;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+	from { opacity: 0; transform: translateY(15px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+	animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
