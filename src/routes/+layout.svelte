@@ -25,17 +25,23 @@
 		position: fixed;
 		top: 1.5rem;
 		right: 1.5rem;
-		color: var(--muted-foreground);
+		background: #ffffff;
+		color: #000000;
+		padding: 0.5rem 1rem;
+		border-radius: 9999px;
 		display: flex;
 		align-items: center;
 		gap: 0.4rem;
 		font-size: 0.85rem;
-		font-weight: 500;
-		transition: color 0.2s;
+		font-weight: 600;
+		transition: all 0.2s;
 		z-index: 50;
+		box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
 	}
 	.gh-link:hover {
-		color: var(--foreground);
+		transform: translateY(-2px);
+		box-shadow: 0 6px 20px rgba(255, 255, 255, 0.25);
+		color: #000000;
 	}
 	
 	.watermark {

@@ -271,5 +271,5 @@
 	{/each}
 
 	<!-- Watermark -->
-	<text x={width - padding.right} y={height - padding.bottom - 10} text-anchor="end" class="graph-text" fill="rgba(255,255,255,0.1)">star-history.app</text>
+	<text x={width - padding.right} y={height - padding.bottom - 10} text-anchor="end" class="graph-text" style="opacity: 0.5">starhistory.link</text>
 </svg>
