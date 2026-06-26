@@ -9,9 +9,9 @@ export const GET: RequestHandler = async ({ params, url, setHeaders }) => {
 	const theme = url.searchParams.get('theme') || 'cyan';
 	const chartStyle = url.searchParams.get('style') || 'default';
 
-	// Edge caching for 1 hour, serve stale while revalidating for up to 1 day
+	// Edge and Camo caching for 5 minutes, serve stale while revalidating
 	setHeaders({
-		'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+		'Cache-Control': 'public, max-age=300, s-maxage=300, stale-while-revalidate=86400',
 		'Content-Type': 'image/svg+xml'
 	});
 
