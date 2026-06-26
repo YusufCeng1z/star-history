@@ -9,6 +9,9 @@ The generated SVG files use **Pure CSS animations**, which means they run smooth
 
 You can easily customize the color theme and the layout style of your chart!
 
+### Our Own Repo (Because why not?)
+[![Star History of Star History](https://starhistory.link/YusufCeng1z/star-history.svg?theme=violet&style=glass)](https://starhistory.link/YusufCeng1z/star-history)
+
 ### Neon Dark (Default)
 [![SvelteKit Star History](https://starhistory.link/sveltejs/kit.svg?theme=cyan)](https://starhistory.link/sveltejs/kit)
 
