@@ -10,19 +10,19 @@ The generated SVG files use **Pure CSS animations**, which means they run smooth
 You can easily customize the color theme and the layout style of your chart!
 
 ### Our Own Repo (Because why not?)
-[![Star History of Star History](https://starhistory.link/YusufCeng1z/star-history.svg?theme=violet&style=glass)](https://starhistory.link/YusufCeng1z/star-history)
+[![Star History of Star History](https://starhistory.link/YusufCeng1z/star-history.svg?theme=violet&style=glass&v=1)](https://starhistory.link/YusufCeng1z/star-history)
 
 ### Neon Dark (Default)
-[![SvelteKit Star History](https://starhistory.link/sveltejs/kit.svg?theme=cyan)](https://starhistory.link/sveltejs/kit)
+[![SvelteKit Star History](https://starhistory.link/sveltejs/kit.svg?theme=cyan&v=1)](https://starhistory.link/sveltejs/kit)
 
 ### Light Mode
-[![React Star History](https://starhistory.link/facebook/react.svg?theme=amber&style=light)](https://starhistory.link/facebook/react)
+[![React Star History](https://starhistory.link/facebook/react.svg?theme=amber&style=light&v=1)](https://starhistory.link/facebook/react)
 
 ### Glassmorphism
-[![Linux Kernel Star History](https://starhistory.link/torvalds/linux.svg?theme=fuchsia&style=glass)](https://starhistory.link/torvalds/linux)
+[![Linux Kernel Star History](https://starhistory.link/torvalds/linux.svg?theme=fuchsia&style=glass&v=1)](https://starhistory.link/torvalds/linux)
 
 ### Minimal
-[![Vue Star History](https://starhistory.link/vuejs/core.svg?theme=emerald&style=minimal)](https://starhistory.link/vuejs/core)
+[![Vue Star History](https://starhistory.link/vuejs/core.svg?theme=emerald&style=minimal&v=1)](https://starhistory.link/vuejs/core)
 
 ## 🚀 How to Use
 
