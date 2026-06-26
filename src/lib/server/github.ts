@@ -35,7 +35,8 @@ export async function getRepoMeta(owner: string, repo: string): Promise<RepoMeta
 		full_name: data.full_name,
 		stargazers_count: data.stargazers_count,
 		html_url: data.html_url,
-		description: data.description
+		description: data.description,
+		created_at: data.created_at
 	};
 }
 
@@ -43,13 +44,12 @@ export async function getRepoMeta(owner: string, repo: string): Promise<RepoMeta
  * Generates mock star history data for demonstration purposes,
  * creating a realistic exponential or S-curve up to the current star count.
  */
-export function getMockStarHistory(currentStars: number): StarPoint[] {
+export function getMockStarHistory(currentStars: number, createdAt: string): StarPoint[] {
 	const points: StarPoint[] = [];
 	const dataPointsCount = 50;
 	
-	// Let's create a curve over the last 2 years (approx 730 days)
 	const now = new Date();
-	const startDate = new Date(now.getTime() - 730 * 24 * 60 * 60 * 1000);
+	const startDate = new Date(createdAt);
 	
 	let currentCount = 0;
 	

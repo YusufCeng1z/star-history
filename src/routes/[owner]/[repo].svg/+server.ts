@@ -36,7 +36,7 @@ export const GET: RequestHandler = async ({ params, url, setHeaders }) => {
 		throw error(404, 'Repository not found');
 	}
 
-	const history = getMockStarHistory(repoMeta.stargazers_count);
+	const history = getMockStarHistory(repoMeta.stargazers_count, repoMeta.created_at);
 
 	// Render the SVG component on the server
 	const { html } = render(StarGraphSVG, {

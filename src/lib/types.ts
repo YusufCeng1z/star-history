@@ -5,6 +5,7 @@ export interface RepoMeta {
 	stargazers_count: number;
 	html_url: string;
 	description: string | null;
+	created_at: string;
 }
 
 export interface StarPoint {

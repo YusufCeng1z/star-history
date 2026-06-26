@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ params, setHeaders }) => {
 		throw error(404, 'Repository not found');
 	}
 
-	const history = getMockStarHistory(repoMeta.stargazers_count);
+	const history = getMockStarHistory(repoMeta.stargazers_count, repoMeta.created_at);
 
 	return {
 		meta: repoMeta,
