@@ -1,12 +1,22 @@
 import { error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { getRepoMeta, getMockStarHistory } from '$lib/server/github';
+import { getRepoMeta, getStarHistory } from '$lib/server/github';
 import { render } from 'svelte/server';
 import StarGraphSVG from '$lib/components/StarGraphSVG.svelte';
 
+// Errors must not be cached by the CDN/camo, or a rate-limit blip sticks for a day.
+const errorSvg = (message: string, status = 502) =>
+	new Response(
+		`<svg width="900" height="450" viewBox="0 0 900 450" xmlns="http://www.w3.org/2000/svg">
+	<rect width="100%" height="100%" fill="#000" />
+	<text x="50%" y="50%" fill="#ff5555" text-anchor="middle" font-family="sans-serif" font-size="20">${message}</text>
+</svg>`,
+		{ status, headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'no-store' } }
+	);
+
 export const GET: RequestHandler = async ({ params, url, setHeaders }) => {
 	const { owner, repo } = params;
-	const theme = url.searchParams.get('theme') || 'cyan';
+	const theme = url.searchParams.get('theme') || 'mono';
 	const chartStyle = url.searchParams.get('style') || 'default';
 
 	// Edge and Camo caching for 5 minutes, serve stale while revalidating
@@ -19,30 +29,26 @@ export const GET: RequestHandler = async ({ params, url, setHeaders }) => {
 	try {
 		repoMeta = await getRepoMeta(owner, repo);
 	} catch (e: any) {
-		// If GitHub API limits or not found, we could render an error SVG, 
-		// but returning a simple text error SVG is better than crashing the image.
-		return new Response(
-			`<svg width="900" height="450" viewBox="0 0 900 450" xmlns="http://www.w3.org/2000/svg">
-				<rect width="100%" height="100%" fill="#000" />
-				<text x="50%" y="50%" fill="#ff0000" text-anchor="middle" font-family="sans-serif" font-size="20">
-					${e.message}
-				</text>
-			</svg>`,
-			{ headers: { 'Content-Type': 'image/svg+xml' } }
-		);
+		return errorSvg(e.message, e.status);
 	}
 
 	if (!repoMeta) {
 		throw error(404, 'Repository not found');
 	}
 
-	const history = getMockStarHistory(repoMeta.stargazers_count, repoMeta.created_at);
+	let history, coverage;
+	try {
+		({ points: history, coverage } = await getStarHistory(repoMeta));
+	} catch (e: any) {
+		return errorSvg(e.message, e.status);
+	}
 
 	// Render the SVG component on the server
 	const { html } = render(StarGraphSVG, {
 		props: {
 			meta: repoMeta,
 			history,
+			coverage,
 			theme,
 			chartStyle
 		}

@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { getRepoMeta, getMockStarHistory } from '$lib/server/github';
+import { getRepoMeta, getStarHistory, GitHubError } from '$lib/server/github';
 
 export const load: PageServerLoad = async ({ params, setHeaders }) => {
 	const { owner, repo } = params;
@@ -14,17 +14,24 @@ export const load: PageServerLoad = async ({ params, setHeaders }) => {
 	try {
 		repoMeta = await getRepoMeta(owner, repo);
 	} catch (e: any) {
-		throw error(e.message.includes('Limitine') ? 429 : 404, e.message);
+		throw error(e instanceof GitHubError ? e.status : 502, e.message);
 	}
 
 	if (!repoMeta) {
 		throw error(404, 'Repository not found');
 	}
 
-	const history = getMockStarHistory(repoMeta.stargazers_count, repoMeta.created_at);
+	let history, coverage, insights;
+	try {
+		({ points: history, coverage, ...insights } = await getStarHistory(repoMeta));
+	} catch (e: any) {
+		throw error(e instanceof GitHubError ? e.status : 502, e.message);
+	}
 
 	return {
 		meta: repoMeta,
-		history
+		history,
+		coverage,
+		insights
 	};
 };
