@@ -1,43 +1,39 @@
-# 🌟 Star History SVG Generator
+# Star History
 
-Generate beautiful, animated, and highly customizable GitHub Star History charts for your repositories. 
-The generated SVG files use **Pure CSS animations**, which means they run smoothly directly inside your GitHub `README.md` without requiring any JavaScript.
+Star history charts for any public GitHub repo, as an SVG you can paste into a README.
 
-👉 **[Generate your chart at StarHistory.link](https://starhistory.link)**
+Live at [starhistory.link](https://starhistory.link).
 
-## 🎨 Examples
+[![Star History of sveltejs/kit](https://starhistory.link/sveltejs/kit.svg?style=ascii)](https://starhistory.link/sveltejs/kit)
 
-You can easily customize the color theme and the layout style of your chart!
+## Use it
 
-### Our Own Repo (Because why not?)
-[![Star History of Star History](https://starhistory.link/YusufCeng1z/star-history.svg?theme=violet&style=glass&v=1)](https://starhistory.link/YusufCeng1z/star-history)
+1. Open the site and enter `owner/repo` or a GitHub link.
+2. Pick a look and a colour.
+3. Copy the Markdown, HTML or image URL into your README.
 
-### Neon Dark (Default)
-[![SvelteKit Star History](https://starhistory.link/sveltejs/kit.svg?theme=cyan&v=1)](https://starhistory.link/sveltejs/kit)
+The embed is a plain SVG with CSS animation, so it runs inside GitHub READMEs without JavaScript. Direct URL form:
 
-### Light Mode
-[![React Star History](https://starhistory.link/facebook/react.svg?theme=amber&style=light&v=1)](https://starhistory.link/facebook/react)
+```
+https://starhistory.link/OWNER/REPO.svg?style=ascii&theme=blue
+```
 
-### Glassmorphism
-[![Linux Kernel Star History](https://starhistory.link/torvalds/linux.svg?theme=fuchsia&style=glass&v=1)](https://starhistory.link/torvalds/linux)
+## Looks
 
-### Minimal
-[![Vue Star History](https://starhistory.link/vuejs/core.svg?theme=emerald&style=minimal&v=1)](https://starhistory.link/vuejs/core)
+`default`, `light`, `minimal`, `glass`, `ascii`, `matrix`, `space`, `synthwave`
 
-## 🚀 How to Use
+Colours (`theme`): `cyan`, `emerald`, `violet`, `amber`, `rose`, `fuchsia`, `blue`, `lime`, `mono`. `matrix`, `space` and `synthwave` use their own palette.
 
-1. Go to **[StarHistory.link](https://starhistory.link)**
-2. Type in your GitHub repository (e.g., `owner/repo` or full URL)
-3. Customize your chart using the **Style** and **Theme** pickers.
-4. Click the **Copy** button and paste the markdown snippet directly into your `README.md`!
+## Data
 
-## 🛠️ Features
+Numbers come from GitHub's repository star history endpoint (`GET /repos/{owner}/{repo}/stargazers/history`), which returns exact stars per week for any public repo. Totals match the live star count.
 
-- **Pure CSS Animations**: Smooth line drawing and "pop" effects using SVG `@keyframes`.
-- **SSR Rendering**: Built with Svelte 5 and SvelteKit for blazingly fast SVG generation.
-- **Dynamic Theming**: 8 vibrant themes (`cyan`, `emerald`, `violet`, `amber`, `rose`, `fuchsia`, `blue`, `lime`) and 4 structural styles (`default`, `light`, `glass`, `minimal`).
-- **Edge Caching**: Heavily cached via CDN for instantaneous loading on GitHub Proxy.
+## Run locally
 
-## 🤝 Open Source
+```
+npm install
+cp .env.example .env   # optional: add GITHUB_TOKEN for a higher rate limit
+npm run dev
+```
 
-Made with ❤️ by [yusufceng1z](https://github.com/yusufceng1z). Feel free to star this repository if you find it helpful!
+SvelteKit 2, Svelte 5. Social images (`/og/owner/repo.png`) are rendered with resvg.
