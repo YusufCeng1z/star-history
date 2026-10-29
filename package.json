@@ -15,13 +15,17 @@
 		"@sveltejs/adapter-auto": "^7.0.1",
 		"@sveltejs/kit": "^2.63.0",
 		"@sveltejs/vite-plugin-svelte": "^7.1.2",
+		"@types/node": "^26.6.6",
 		"svelte": "^5.56.1",
 		"svelte-check": "^4.6.0",
 		"typescript": "^6.0.3",
 		"vite": "^8.0.16"
 	},
 	"dependencies": {
+		"@expo-google-fonts/inter": "^0.4.2",
+		"@expo-google-fonts/jetbrains-mono": "^0.4.1",
 		"@lucide/svelte": "^1.21.0",
+		"@resvg/resvg-js": "^2.6.2",
 		"lucide-svelte": "^1.0.1"
 	}
 }

@@ -1,140 +1,153 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { parseRepo } from '$lib/repo';
+	import Seo from '$lib/components/Seo.svelte';
+	import { SITE_URL } from '$lib/site';
+	import Sky from '$lib/components/Sky.svelte';
+	import type { StarPoint } from '$lib/types';
+
+	const EXAMPLES = ['sveltejs/kit', 'vercel/next.js', 'facebook/react'];
+	const DEMO = 'sveltejs/kit';
+	const STYLES = [
+		{ id: 'space', label: 'Space', note: 'a rocket rides the curve', wide: true },
+		{ id: 'synthwave', label: 'Synthwave', note: 'neon grid, 80s sunset' },
+		{ id: 'matrix', label: 'Matrix', note: 'follow the white rabbit' },
+		{ id: 'ascii', label: 'ASCII', note: 'drawn with text characters' },
+		{ id: 'default', label: 'Default', note: 'clean and dark' },
+		{ id: 'light', label: 'Light', note: 'for light READMEs', wide: true }
+	];
+	const SNIPPET = `[![Star History](https://starhistory.link/${DEMO}.svg?style=ascii)](https://starhistory.link/${DEMO})`;
+
+	let copied = $state(false);
+	function copySnippet() {
+		navigator.clipboard.writeText(SNIPPET);
+		copied = true;
+		setTimeout(() => (copied = false), 2000);
+	}
 
 	let inputVal = $state('');
+	let input: HTMLInputElement;
 	let error = $state('');
 
 	function handleSubmit(e: Event) {
 		e.preventDefault();
-		let trimmed = inputVal.trim();
-		if (!trimmed) {
-			error = "Please enter a repository name or URL.";
-			return;
-		}
-		
-		// If it's a full GitHub URL, extract the owner/repo
-		if (trimmed.includes('github.com/')) {
-			try {
-				const urlObj = new URL(trimmed.startsWith('http') ? trimmed : `https://${trimmed}`);
-				const urlParts = urlObj.pathname.split('/').filter(Boolean);
-				if (urlParts.length >= 2) {
-					trimmed = `${urlParts[0]}/${urlParts[1]}`.replace('.git', '');
-				}
-			} catch (err) {
-				// Fallback
-				const match = trimmed.match(/github\.com\/([^\/]+\/[^\/]+)/);
-				if (match && match[1]) {
-					trimmed = match[1].replace('.git', '');
-				}
-			}
-		}
-
-		const parts = trimmed.split('/');
-		if (parts.length !== 2 || !parts[0] || !parts[1]) {
-			error = "Format must be 'owner/repo' or a GitHub URL.";
-			return;
-		}
-
+		if (!inputVal.trim()) { error = 'Please enter a repository name or URL.'; return; }
+		const repo = parseRepo(inputVal);
+		if (!repo) { error = "Format must be 'owner/repo' or a GitHub URL."; return; }
 		error = '';
-		goto(`/${parts[0]}/${parts[1]}`);
+		goto(`/${repo}`);
 	}
+
+	// live preview in the hero sky
+	let series = $state<StarPoint[] | null>(null);
+	let label = $state('');
+	let auto = true;
+	let timer: ReturnType<typeof setTimeout>;
+	const loaded = new Map<string, { label: string; points: StarPoint[] }>();
+
+	async function preview(repo: string) {
+		let hit = loaded.get(repo);
+		if (!hit) {
+			const res = await fetch(`/api/history/${repo}`).catch(() => null);
+			if (!res?.ok) return;
+			const d = await res.json();
+			hit = { label: d.full_name, points: d.points };
+			loaded.set(repo, hit);
+		}
+		label = hit.label;
+		series = hit.points;
+	}
+
+	function userPreview(repo: string | null, delay = 0) {
+		auto = false;
+		clearTimeout(timer);
+		if (repo) timer = setTimeout(() => preview(repo), delay);
+	}
+
+	onMount(() => {
+		// "/" jumps to the search box, like GitHub
+		const key = (e: KeyboardEvent) => {
+			if (e.key === '/' && !(e.target instanceof HTMLInputElement)) { e.preventDefault(); input.focus(); }
+		};
+		addEventListener('keydown', key);
+		let i = 0;
+		const tick = async () => {
+			if (!auto) return;
+			await preview(EXAMPLES[i++ % EXAMPLES.length]);
+			if (auto) setTimeout(tick, 7000);
+		};
+		tick();
+		return () => { auto = false; clearTimeout(timer); removeEventListener('keydown', key); };
+	});
 </script>
 
-<svelte:head>
-	<title>GitHub Star History</title>
-</svelte:head>
+<Seo
+	title="Star History: exact GitHub star charts for your README"
+	description="Create animated, embeddable GitHub star history charts with exact weekly data. Pure SVG, no JavaScript. Six styles, nine colours, free and open source."
+	jsonLd={{
+		'@context': 'https://schema.org',
+		'@type': 'WebApplication',
+		name: 'Star History',
+		url: SITE_URL,
+		applicationCategory: 'DeveloperApplication',
+		operatingSystem: 'Any',
+		offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+		description: 'Embeddable GitHub star history charts with exact weekly data.'
+	}}
+/>
 
-<div class="page-wrapper animate-fade-in">
-	<div class="card main-card">
-		<div class="card-header text-center">
-			<div class="icon-wrapper">
-				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3-.3 6-1.5 6-6.5a5.5 5.5 0 0 0-1.5-3.8 5.5 5.5 0 0 0 .2-3.8s-1.2-.4-3.9 1.4a13.4 13.4 0 0 0-7 0C6.2 1.4 5 1.8 5 1.8a5.5 5.5 0 0 0 .2 3.8A5.5 5.5 0 0 0 3.7 9.4c0 5 3 6.2 6 6.5a4.8 4.8 0 0 0-1 3.2v4"/><path d="M9 18c-4.5 1.5-5-2.5-7-3"/></svg>
-			</div>
-			<h1 class="card-title">Star History</h1>
-			<p class="card-description">View the star history of GitHub repositories.</p>
-		</div>
+<main class="page">
+	<section class="hero">
+		<Sky {series} {label} />
+		<div class="hero-copy animate-fade-in">
+			<h1>See how any GitHub repo grew.</h1>
+			<p class="sub">Type a repo, pick a look, paste one line into your README.</p>
 
-		<div class="card-content">
 			<form onsubmit={handleSubmit} class="search-form">
-				<div class="input-wrapper">
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-					<input
-						type="text"
-						class="input"
-						placeholder="owner/repo or full GitHub URL"
-						bind:value={inputVal}
-					/>
-				</div>
-				
-				{#if error}
-					<p class="error-msg">{error}</p>
-				{/if}
-
-				<button type="submit" class="btn btn-primary w-full">
-					Generate Chart
-				</button>
+				<input
+					type="text"
+					class="input"
+					placeholder="sveltejs/kit or a GitHub link"
+					bind:this={input}
+					aria-label="Repository"
+					bind:value={inputVal}
+					oninput={() => userPreview(parseRepo(inputVal), 600)}
+				/>
+				<button type="submit" class="btn btn-primary">Generate</button>
 			</form>
+			{#if error}
+				<p class="error-msg" role="alert">{error}</p>
+			{/if}
+
+			<div class="chips" aria-label="Examples">
+				{#each EXAMPLES as r}
+					<a class="chip" href="/{r}" onpointerenter={() => userPreview(r, 120)} onfocus={() => userPreview(r)}>{r}</a>
+				{/each}
+			</div>
+			<a class="popular" href="/popular">Browse popular repos →</a>
 		</div>
-	</div>
-</div>
+
+	</section>
+</main>
 
 <style>
-	.page-wrapper {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		min-height: 100vh;
-		padding: 1rem;
-	}
+	.hero { position: relative; height: 100svh; padding: 0 1.25rem; display: flex; justify-content: center; overflow: hidden; }
+	.hero-copy { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: 12vh; width: 100%; max-width: 62rem; }
+	h1 { font-size: clamp(2.25rem, 6vw, 3.75rem); font-weight: 600; letter-spacing: -0.035em; line-height: 1.08; max-width: 18ch; }
+	.sub { margin-top: 1.25rem; max-width: 30rem; color: var(--fg-2); font-size: 1.1rem; }
+	.search-form { display: flex; gap: 0.5rem; width: 100%; max-width: 28rem; margin-top: 2rem; }
+	.search-form .btn { height: 2.75rem; padding: 0 1.4rem; }
+	.error-msg { margin-top: 0.75rem; color: var(--danger); font-size: 0.875rem; }
 
-	.main-card {
-		width: 100%;
-		max-width: 400px;
+	.chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 1.25rem; }
+	.chip {
+		font-family: var(--font-mono); font-size: 0.82rem; color: var(--fg-2);
+		border: 1px solid var(--line-2); border-radius: 999px; padding: 0.25rem 0.7rem; background: rgba(8, 8, 8, 0.6);
+		transition: background-color 150ms ease, color 150ms ease;
 	}
+	.chip:hover { background: var(--hover); color: var(--fg); }
 
-	.text-center {
-		align-items: center;
-		text-align: center;
-	}
-
-	.icon-wrapper {
-		margin-bottom: 0.5rem;
-		display: flex;
-		justify-content: center;
-		color: var(--foreground);
-	}
-
-	.search-form {
-		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
-	}
-
-	.input-wrapper {
-		position: relative;
-	}
-
-	.search-icon {
-		position: absolute;
-		left: 0.75rem;
-		top: 50%;
-		transform: translateY(-50%);
-		color: var(--muted-foreground);
-	}
-
-	.input {
-		padding-left: 2.25rem;
-	}
-
-	.w-full {
-		width: 100%;
-	}
-
-	.error-msg {
-		color: var(--destructive);
-		font-size: 0.875rem;
-		font-weight: 500;
-		text-align: center;
-		margin-top: -0.5rem;
-	}
+	.popular { margin-top: 1.1rem; font-size: 0.85rem; color: var(--fg-3); transition: color 150ms ease; }
+	.popular:hover { color: var(--fg); }
 </style>
